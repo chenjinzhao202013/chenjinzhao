@@ -106,10 +106,33 @@ i18n.logOutputEncoding = utf-8
 - **双击** `git-init.bat`：纯 ASCII 编码，任何代码页下都不会乱码，出错会明确提示原因
 - 或执行 `powershell -ExecutionPolicy Bypass -File .\git-init.ps1`：UTF-8 with BOM，中文提示
 
-### 推送到远程仓库（GitHub / Gitee，按需）
+### 推送到远程仓库（GitHub / Gitee）
+
+远程地址已配好：
+
+```
+origin  https://github.com/chenjinzhao202013/chenjinzhao.git
+```
+
+**推送只需一条命令**（在你自己的终端里执行，会弹出浏览器让你登录 GitHub 授权）：
 
 ```powershell
-git remote add origin <你的仓库地址>
+cd 'D:\实验\专业设计\online-exam-student'
+git push -u origin main
+```
+
+> 首次推送会弹出 Git Credential Manager 的浏览器授权页，登录并同意后凭据会被记住，以后不用再登。
+>
+> 如果卡在连接超时，通常是网络问题（GitHub 在国内访问不稳定）。可以改用代理：
+> ```powershell
+> git config --global http.proxy http://127.0.0.1:7890   # 端口换成你自己的代理
+> ```
+> 或把仓库改放到 Gitee：`git remote set-url origin <你的Gitee地址>` 后重新 push。
+
+**如果要重建远程（换仓库地址）**：
+
+```powershell
+git remote set-url origin <新的仓库地址>
 git push -u origin main
 ```
 
