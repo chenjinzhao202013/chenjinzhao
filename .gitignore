@@ -28,10 +28,10 @@ npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# ---- 自检脚本的输出与临时文件 ----
+# ---- 运行产物与临时文件 ----
 _selftest_out.txt
-_smoke_out.txt
 *.tmp
+*.bak
 
 # ---- Office / Word 打开文档时产生的临时文件 ----
 ~$*.doc
@@ -43,7 +43,5 @@ _smoke_out.txt
 # 说明：以下内容应当提交，故不忽略
 #   index.html / css/ / js/          —— 学生端页面与脚本
 #   sql/02_exam_record.sql           —— 数据库补充脚本
-#   README.md                        —— 项目说明
-#   _verify_selftest.js              —— 离线数据自检脚本
-#   _smoke_test.js                   —— 离线端到端冒烟测试
+#   README.md / .gitignore           —— 项目说明与版本管理规则
 # ============================================================

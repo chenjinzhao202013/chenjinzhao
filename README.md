@@ -46,15 +46,7 @@ selfTest()
 答题页取题是否**拿不到答案**、开考 / 断点续答 / 暂存答案 / 交卷上报 / 查询本人成绩与答题详情是否串得通。
 
 > 判分规则、题库组织、试卷配置属于同学 1 / 同学 2 的模块，本自检**只验证能否正确调用并拿到结果**，
-> 不校验他们的业务规则。此脚本为只读检查，可从 `index.html` 中直接移除。
-
-> 也可以在 Node 环境下离线跑（不需要浏览器）：
-> ```powershell
-> cd online-exam-student
-> node _verify_selftest.js       # 学生端数据自检：当前 25/25 通过
-> node _smoke_test.js            # 端到端冒烟：自动登录→列表→开考→交卷→成绩页（当前 22/22）
-> ```
-> 两个脚本都用极简 DOM stub 载入全部 js 文件真实执行，适合无浏览器时做回归自检；均为只读检查，可直接删除。
+> 不校验他们的业务规则。此脚本为只读检查，不影响页面功能。
 
 ---
 
@@ -103,8 +95,15 @@ i18n.logOutputEncoding = utf-8
 
 ### 重新从零初始化（换电脑 / 重装时用）
 
-- **双击** `git-init.bat`：纯 ASCII 编码，任何代码页下都不会乱码，出错会明确提示原因
-- 或执行 `powershell -ExecutionPolicy Bypass -File .\git-init.ps1`：UTF-8 with BOM，中文提示
+```powershell
+cd 'D:\实验\专业设计\online-exam-student'
+git init
+git add -A
+git commit -m "学生端考试全流程交互：可考列表与状态标注、整卷/逐题答题、倒计时与自动交卷、成绩与答题详情"
+```
+
+> 注意：`.gitignore` 已就位，`git add -A` 不会把 `.idea/` 带进仓库。
+> 若提示需要先配置身份，执行上一节的 `git config --global` 命令。
 
 ### 推送到远程仓库（GitHub / Gitee）
 
@@ -152,8 +151,8 @@ git push -u origin main
 | --- | --- |
 | `index.html`、`css/`、`js/`（全部页面与脚本） | `.idea/`（含本机绝对路径与项目 ID，属个人 IDE 配置） |
 | `sql/02_exam_record.sql` | `node_modules/`、`dist/`、`build/` |
-| `README.md`、`git-init.bat` | `*.log`、`_selftest_out.txt` 等运行产物 |
-| `_verify_selftest.js`、`_smoke_test.js`（可复现的自检脚本） | `Thumbs.db`、`~$*.doc` 等系统/Office 临时文件 |
+| `README.md`、`.gitignore` | `*.log`、`*.tmp` 等运行产物 |
+|  | `Thumbs.db`、`~$*.doc` 等系统/Office 临时文件 |
 
 > `.idea/` 之所以忽略：里面的 `workspace.xml` 记录了本机路径与随机的 ProjectId，属于个人环境配置；
 > 如果小组约定要共享 IDE 配置，把 `.gitignore` 里 `.idea/` 一行删掉即可。
@@ -165,6 +164,7 @@ git push -u origin main
 ```
 online-exam-student/
 ├── index.html                  页面外壳：顶栏、路由挂载点、Toast、确认框
+├── .gitignore                  版本管理排除规则（忽略 .idea/ 等）
 ├── css/
 │   └── style.css               全部样式（含答题卡、成绩单、响应式）
 ├── js/
@@ -173,14 +173,12 @@ online-exam-student/
 │   ├── api.js                  ★ 数据访问层，所有 SQL 集中在此，替换后端只改这里
 │   ├── ui.js                   公共 UI：提示、确认框、格式化、DOM 工具
 │   ├── app.js                  路由与会话（#/exam-list、#/exam、#/result）+ 演示账号自动登录
-│   ├── selftest.js             数据自检脚本（控制台 selfTest()，可删除）
+│   ├── selftest.js             数据自检脚本（控制台 selfTest()）
 │   ├── page-exam-list.js       ① 考试列表页（含考试状态标注）
 │   ├── page-exam.js            ② 在线答题页（核心，整卷/逐题双模式）
 │   └── page-result.js          ③ 成绩与答卷解析页
 ├── sql/
 │   └── 02_exam_record.sql      学生端所需落库结构（考试起止时间 / 考试记录 / 答题明细）+ 学生端查询 SQL + 演示数据
-├── _verify_selftest.js         Node 环境离线跑自检的脚本（可删除）
-├── _smoke_test.js              Node 环境端到端冒烟测试（可删除）
 └── README.md
 ```
 
