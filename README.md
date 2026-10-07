@@ -60,44 +60,66 @@ selfTest()
 
 ## 一之二、用 Git 做版本管理
 
-项目已经准备好 Git 所需的一切，只差本机安装 Git。
+**当前状态：仓库已初始化并完成首次提交。**
 
-### 第 1 步：安装 Git（本机目前没有）
+| 项 | 值 |
+| --- | --- |
+| Git 版本 | 2.55.0.windows.5（`C:\Program Files\Git\cmd\git.exe`） |
+| 仓库位置 | `D:\实验\专业设计\online-exam-student`（分支 `main`） |
+| 首次提交 | `846e42d` 学生端考试全流程交互：可考列表与状态标注、整卷/逐题答题、倒计时与自动交卷、成绩与答题详情 |
+| 纳入版本管理 | 18 个文件（页面、脚本、SQL、README、自检脚本） |
+| 已排除 | `.idea/`（含本机路径与 ProjectId）、`node_modules/`、日志与临时文件 |
 
-任选一种：
-
-```powershell
-# 方式 A：winget（在普通 PowerShell 窗口里执行，不要用受限终端）
-winget install --id Git.Git -e --source winget
-```
-- 方式 B：从 <https://git-scm.com/download/win> 下载安装包，**安装时勾选 “Add Git to PATH”**
-- 方式 C：在 IntelliJ IDEA 里 `File → Settings → Version Control → Git`，点 `Download and Install`
-
-装完**重新打开**终端，用 `git --version` 确认能输出版本号。
-
-### 第 2 步：一键初始化仓库
-
-直接**双击**项目里的 `git-init.bat` 即可（身份信息已预填为你给的值）：
-`user.name = chenjinzhao202013`，`user.email = 3184568097@qq.com`
-
-它依次做这些事：写入提交身份 → `git init`（分支 `main`）→ `git add -A` → 首次提交 → 打印提交记录。
-
-### 第 3 步（手动等价命令，想自己敲就用这段）
+### 每次改完代码怎么提交
 
 ```powershell
-cd D:\实验\专业设计\online-exam-student
-
-git config --global user.name  "chenjinzhao202013"
-git config --global user.email "3184568097@qq.com"
-git config --global init.defaultBranch main
-git config --global core.quotepath false     # 中文文件名在 git status 里正常显示
-git config --global core.autocrlf true       # Windows 换行处理
-
-git init
-git add -A
-git commit -m "学生端考试全流程交互：可考列表与状态标注、整卷/逐题答题、倒计时与自动交卷、成绩与答题详情"
-git log --oneline
+cd 'D:\实验\专业设计\online-exam-student'
+git status                       # 看看改了哪些文件
+git add -A                       # 暂存全部改动
+git commit -m "这次改了什么"      # 提交
+git log --oneline                # 查看历史
 ```
+
+### 本仓库已写入的配置（`.git/config`）
+
+```
+user.name  = chenjinzhao202013
+user.email = 3184568097@qq.com
+core.quotepath = false           # 中文文件名正常显示，不显示成 \346\226\207
+core.autocrlf = true             # Windows 换行处理
+i18n.commitEncoding = utf-8
+i18n.logOutputEncoding = utf-8
+```
+
+> ⚠️ 这些是**仓库级**配置，只对 `online-exam-student` 生效。
+> 若要让本机所有项目都默认带上身份，请**在你的普通 PowerShell 里**执行（本项目所在终端因沙箱限制无法写 `C:\Users\chenjinzhao\.gitconfig`）：
+> ```powershell
+> git config --global user.name  "chenjinzhao202013"
+> git config --global user.email "3184568097@qq.com"
+> git config --global init.defaultBranch main
+> git config --global core.quotepath false
+> git config --global core.autocrlf true
+> ```
+
+### 重新从零初始化（换电脑 / 重装时用）
+
+- **双击** `git-init.bat`：纯 ASCII 编码，任何代码页下都不会乱码，出错会明确提示原因
+- 或执行 `powershell -ExecutionPolicy Bypass -File .\git-init.ps1`：UTF-8 with BOM，中文提示
+
+### 推送到远程仓库（GitHub / Gitee，按需）
+
+```powershell
+git remote add origin <你的仓库地址>
+git push -u origin main
+```
+
+### 附：安装 Git 的要点（重装时参考）
+
+- 下载：<https://git-scm.com/download/win> 的 **64-bit Git for Windows Setup**
+- 安装向导只需改两页：
+  - **Adjusting your PATH environment** → `Git from the command line and also from 3rd-party software`
+  - **Configuring the terminal emulator** → `Use Windows' default console window`（本机代码页是 936，这页选错中文会乱码）
+- 其余保持默认，装完**重开终端**，用 `git --version` 验证
 
 ### 提交范围：什么会被提交、什么被忽略
 
