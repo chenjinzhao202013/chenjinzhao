@@ -1,0 +1,49 @@
+# ============================================================
+# .gitignore —— 学生端考试系统
+# ============================================================
+
+# ---- IDE / 编辑器配置（含本机绝对路径与项目 ID，不应提交）----
+.idea/
+.vscode/
+*.iml
+*.suo
+*.user
+*.swp
+*~
+
+# ---- 操作系统生成的文件 ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ---- Node / 前端依赖与构建产物 ----
+node_modules/
+dist/
+build/
+.cache/
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- 自检脚本的输出与临时文件 ----
+_selftest_out.txt
+_smoke_out.txt
+*.tmp
+
+# ---- Office / Word 打开文档时产生的临时文件 ----
+~$*.doc
+~$*.docx
+~$*.xls
+~$*.xlsx
+
+# ============================================================
+# 说明：以下内容应当提交，故不忽略
+#   index.html / css/ / js/          —— 学生端页面与脚本
+#   sql/02_exam_record.sql           —— 数据库补充脚本
+#   README.md                        —— 项目说明
+#   _verify_selftest.js              —— 离线数据自检脚本
+#   _smoke_test.js                   —— 离线端到端冒烟测试
+# ============================================================
